@@ -9,14 +9,15 @@ func Exec(input string) []uint32{
 	/* padding */
 	message := padding(bytes[:])
 
-	fmt.Print("After Padding: ")
+	fmt.Print("After Padding: \n")
 	for i:=0; i<len(message); i++  {
 		fmt.Printf("%x ", message[i])
 	}
 	fmt.Println()
-
+	fmt.Println()
 	/* H */
 	for i,times := 0,len(message)/16; i < times; i++ {
+		fmt.Printf("Block %d:\n", i)
 		compression(message[i*16:(i+1)*16])
 	}
 

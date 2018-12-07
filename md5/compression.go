@@ -1,5 +1,7 @@
 package md5
 
+import "fmt"
+
 var(
 	X1 = []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15}
 	X2 = []int{1, 6,11, 0, 5,10,15, 4, 9,14, 3, 8,13, 2, 7,12}
@@ -33,9 +35,17 @@ var(
 )
 
 func compression(Y []uint32)  {
+	start := make([]uint32, 4)
+	for i := 0; i < 4; i++ {
+		start[i] = CV[i]
+	}
 	for i := 0; i < 4; i++ {
 		g(Y, i)
 	}
+	CV[0] += start[0]
+	CV[1] += start[1]
+	CV[2] += start[2]
+	CV[3] += start[3]
 }
 
 func g(Y []uint32, times int)  {
@@ -68,12 +78,8 @@ func g(Y []uint32, times int)  {
 		a, b, c, d := CV[0], CV[1], CV[2], CV[3]
 		CV[1] = b + CLS(a + function(b, c, d) +  Y[X[i]] + T[times*16 + i], S[i])
 		CV[0], CV[2], CV[3] = d, b, c
+		fmt.Printf("%x %x %x %x\n", CV[0],CV[1],CV[2],CV[3])
 	}
-
-	CV[0] += 0x67452301
-	CV[1] += 0xEFCDAB89
-	CV[2] += 0x98BADCFE
-	CV[3] += 0x10325476
 
 }
 
