@@ -7,7 +7,6 @@ import (
 
 func padding(input []byte) (message []uint32) {
 	K := len(input) * 8
-
 	// 填充P位数据
 	P := (448 - (K % 512) + 512) % 512
 	if P == 0 {
@@ -20,7 +19,7 @@ func padding(input []byte) (message []uint32) {
 
 	// 附加K值的低64位
 	b := make([]byte, 8)
-	binary.BigEndian.PutUint64(b, uint64(K))
+	binary.LittleEndian.PutUint64(b, uint64(K))
 	input = append(input, b...)
 
 	// 转成uint32数组
